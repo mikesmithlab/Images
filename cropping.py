@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
-from .colors import *
+import tkinter as tk
+from PIL import Image, ImageTk
 
 
 __all__ = [
@@ -76,3 +77,31 @@ def crop_and_mask(im, bbox, mask_im, mask_color='black'):
     im = mask(im, mask_im, mask_color)
     im = crop(im, bbox)
     return im
+
+
+class InteractiveCrop:
+    """Take an interactive crop of a shape"""
+
+    def __init__(self, im, no_of_sides=1):
+        master = tk.Tk()
+        self.canvas = tk.Canvas(master, width=im.shape[0], height=im.shape[1])
+        self.canvas.pack()
+        image = ImageTk.PhotoImage(Image.fromarray(im))
+        self.canvas.create_image(0, 0, anchor=tk.NW, image=image)
+        self.canvas.bind("<Button-1>", self.mouse_callback)
+        self.x = []
+        self.y = []
+        self.points = []
+        tk.mainloop()
+
+    def mouse_callback(self, event):
+        x = event.x
+        y = event.y
+        self.update(x, y)
+
+    def update(self, x, y):
+        self.x.append(x)
+        self.y.append(y)
+        self.points.append(x)
+        self.points.append(y)
+        polygon = self.canvas.create_polygon(self.points, outline='black', width=2)
