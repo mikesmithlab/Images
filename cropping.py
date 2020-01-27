@@ -146,7 +146,7 @@ class CropPolygon:
     def finish(self):
         points = np.array(self.points)
         points = points.reshape(len(points)//2, 2)
-        mask = np.zeros_like(self.im, dtype=np.uint8)
+        mask = np.zeros_like(self.im[:, :, 0], dtype=np.uint8)
         cv2.fillPoly(mask, pts=np.array([points], dtype=np.int32), color=(255, 255, 255))
         bbox = BBox(min(points[:, 0]), max(points[:, 1]), min(points[:, 1]), max(points[:, 1]))
         self.result = CropResult(bbox, mask, points=points)
@@ -205,7 +205,7 @@ class CropCircle:
         tk.mainloop()
 
     def finish(self):
-        mask = np.zeros_like(self.im, dtype=np.uint8)
+        mask = np.zeros_like(self.im[:, :, 0], dtype=np.uint8)
         cv2.circle(mask, (int(self.xc), int(self.yc)), int(self.r),
                    [255, 255, 255], thickness=-1)
         bbox = BBox(int(self.xc-self.r), int(self.xc+self.r), int(self.yc-self.r), int(self.yc+self.r))
