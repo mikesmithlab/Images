@@ -1,5 +1,6 @@
-from cropping import InteractiveCrop
+from cropping import crop_polygon
 from basics import load
 
 im = load("/home/ppxjd3/Pictures/hecx.png")
-ic = InteractiveCrop(im)
+ic = crop_polygon(im)
+print(ic)
