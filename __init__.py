@@ -14,4 +14,15 @@ from thresholding import *
 from draw import *
 from geometric import *
 from gui_base import *
+from feature_detection import *
 
+# __all__ = [
+#     "basics",
+#     "colors",
+#     "cropping",
+#     "thresholding",
+#     "draw",
+#     "geometric",
+#     "gui_base",
+#     "feature_detection"
+# ]
