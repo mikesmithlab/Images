@@ -3,7 +3,8 @@ import random
 from PIL import Image, ImageTk
 from __init__ import *
 import numpy as np
-
+import locale
+# locale.setlocale(locale.LC_NUMERIC, 'pl_PL.UTF8')
 
 __all__ = [
     "ParamGui"
@@ -58,11 +59,15 @@ class ParamGui:
             self._update_sliders()
 
     def slider_callback(self, val):
+        for key in self.param_dict:
+            val = self.sliders[key].get()
+            self.labels[key].config(text=val)
         if self.live_update.get():
             self._update_sliders()
 
     def add_sliders(self):
 
+        self.variables = {}
         self.sliders = {}
         self.labels = {}
 
@@ -80,11 +85,14 @@ class ParamGui:
             label = tk.Label(frame, text=key)
             label.pack(side=tk.LEFT)
             var = tk.Variable(value=val)
-            slider = tk.Scale(frame, from_=bottom, to=top, resolution=step, orient=tk.HORIZONTAL, length=self.width//2, command=self.slider_callback, variable=var)
-            # slider.set(val)
+            slider = OddScale(frame, from_=bottom, to=top, resolution=step, orient=tk.HORIZONTAL, showvalue=False, length=self.width//2, command=self.slider_callback, variable=var)
             slider.pack(side=tk.LEFT, fill=tk.X)
+            label = tk.Label(frame, text=slider.get())
+            label.pack(side=tk.LEFT)
             frame.pack()
+            self.variables[key] = var
             self.sliders[key] = slider
+            self.labels[key] = label
 
     def _update_sliders(self):
         if self.type == 'multiframe':
@@ -109,3 +117,27 @@ class ParamGui:
             self.im = ims[0]
         else:
             self.im = hstack(*ims)
+
+
+class OddScale(tk.Scale):
+
+    def __init__(self, master=None, cnf={}, **kw):
+        self.odd_only = False
+        if 'resolution' in kw:
+            if 'from_' in kw:
+                if (kw['resolution'] == 2) * (kw['from_']%2 != 0):
+                    self.odd_only = True
+        kw['resolution'] = 1
+        tk.Scale.__init__(self, master, cnf, **kw)
+
+    def get(self):
+        value = self.tk.call(self._w, 'get')
+        try:
+            val = self.tk.getint(value)
+        except (ValueError, TypeError, tk.TclError):
+            val = self.tk.getdouble(value)
+        if self.odd_only:
+            if val % 2 == 0:
+                val += 1
+        self.set(val)
+        return val
