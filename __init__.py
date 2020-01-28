@@ -15,6 +15,8 @@ from draw import *
 from geometric import *
 from gui_base import *
 from feature_detection import *
+from smoothing import *
+from contours import *
 
 # __all__ = [
 #     "basics",

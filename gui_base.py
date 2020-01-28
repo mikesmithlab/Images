@@ -13,10 +13,16 @@ __all__ = [
 
 class ParamGui:
 
-    def __init__(self, img_or_vid):
+    def __init__(self, img_or_vid, num_imgs=1):
+        self.num_imgs = num_imgs
         self._file_setup(img_or_vid)
         self.im0 = self.im.copy()
         self.width, self.height = self.im.shape[:2]
+        if self.num_imgs == 2:
+            self.width *= 2.1
+
+        if num_imgs == 2:
+            self._display_img(self.im0, self.im0)
         self.init_ui()
 
     def _file_setup(self, img_or_vid):
@@ -104,9 +110,6 @@ class ParamGui:
             self.param_dict[key][0] = val
         self.update()
         self.update_im()
-
-    def update(self):
-        self.im = ~self.im
 
     def update_im(self):
         self.image = ImageTk.PhotoImage(Image.fromarray(self.im))
