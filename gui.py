@@ -71,6 +71,54 @@ class AdaptiveThresholdGui(ParamGui):
                               )
 
 
+class InrangeGui(ParamGui):
+
+    def __init__(self, img):
+        self.grayscale = True
+        self.param_dict = {'bottom': [1, 0, 255, 1],
+                           'top': [200, 0, 255, 1]}
+        ParamGui.__init__(self, img)
+
+    def update(self):
+        self.im = cv2.inRange(self.im0, self.param_dict['bottom'][0],
+                              self.param_dict['top'][0])
+
+
+class Inrange3GUI(ParamGui):
+
+    def __init__(self, img):
+        self.grayscale = False
+        self.param_dict = {'0 bottom': [1, 0, 255, 1],
+                           '0 top': [200, 0, 255, 1],
+                           '1 bottom': [1, 0, 255, 1],
+                           '1 top': [200, 0, 255, 1],
+                           '2 bottom': [1, 0, 255, 1],
+                           '2 top': [200, 0, 255, 1]}
+        ParamGui.__init__(self, img)
+
+    def update(self):
+        self.im = cv2.inRange(
+            self.im0,
+            (self.param_dict['0 bottom'][0], self.param_dict['1 bottom'][0],
+             self.param_dict['2 bottom'][0]),
+            (self.param_dict['0 top'][0], self.param_dict['1 top'][0],
+             self.param_dict['2 top'][0]))
+
+class CannyGui(ParamGui):
+
+    def __init__(self, img):
+        self.grayscale = True
+        self.param_dict = {'p1': [1, 0, 255, 1],
+                           'p2': [1, 0, 255, 1]}
+        ParamGui.__init__(self, img)
+
+    def update(self):
+        self.im = cv2.Canny(self.im0,
+                            self.param_dict['p1'][0],
+                            self.param_dict['p2'][0])
+
+
+
 if __name__ == "__main__":
     from basics import load
     im = load("/home/ppxjd3/Pictures/hecx.png")
