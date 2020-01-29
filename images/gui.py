@@ -257,7 +257,7 @@ class WatershedGui(ParamGui):
 
 
 if __name__ == "__main__":
-    from basics import load
+    from images.basics import load
 
     im = load("/home/ppxjd3/Pictures/hecx.png")
     pg = ContoursGui(im)
