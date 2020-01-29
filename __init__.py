@@ -17,14 +17,3 @@ from gui_base import *
 from feature_detection import *
 from smoothing import *
 from contours import *
-
-# __all__ = [
-#     "basics",
-#     "colors",
-#     "cropping",
-#     "thresholding",
-#     "draw",
-#     "geometric",
-#     "gui_base",
-#     "feature_detection"
-# ]

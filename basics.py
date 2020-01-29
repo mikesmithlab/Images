@@ -11,16 +11,14 @@ __all__ = [
     'write_img',
     'save',
     'write',
-    'get_width_and_height',
+    'width_and_height',
     'dimensions',
-    'get_height',
     'height',
-    'get_width',
     'width',
     'to_uint8',
-    'get_depth',
     'Displayer',
     'mean',
+    'depth'
 ]
 
 
@@ -121,7 +119,7 @@ save = write_img
 write = write_img
 
 
-def get_width_and_height(img):
+def width_and_height(img):
     """
     Returns width, height for an image
 
@@ -141,15 +139,15 @@ def get_width_and_height(img):
     Width of an image is the first dimension for numpy arrays.
     Height of an image is the first dimension for openCV
     """
-    width = get_width(img)
-    height = get_height(img)
-    return width, height
+    w = width(img)
+    h = height(img)
+    return w, h
 
 
-dimensions = get_width_and_height
+dimensions = width_and_height
 
 
-def get_width(img):
+def width(img):
     """
     Returns width for img
 
@@ -166,10 +164,7 @@ def get_width(img):
     return int(np.shape(img)[1])
 
 
-width = get_width
-
-
-def get_height(img):
+def height(img):
     """
     Returns the height of an image
 
@@ -186,13 +181,7 @@ def get_height(img):
     return int(np.shape(img)[0])
 
 
-height = get_height
-
-
-
-
-
-def get_depth(img):
+def depth(img):
     shp = np.shape(img)
     if len(shp) == 2:
         return 1
