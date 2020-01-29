@@ -1,5 +1,5 @@
-from cropping import crop_polygon, crop_and_mask
-from basics import load, plot
+from images.cropping import crop_polygon, crop_and_mask
+from images.basics import load, plot
 
 im = load("/home/ppxjd3/Pictures/hecx.png")
 ic = crop_polygon(im)

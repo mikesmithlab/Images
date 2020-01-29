@@ -1,12 +1,3 @@
-"""
-Dependencies:
-    numpy
-    opencv-python
-    pillow
-    matplotlib
-    scipy
-"""
-
 from images.basics import *
 from images.colors import *
 from images.cropping import *
