@@ -1,9 +1,15 @@
 from __init__ import *
 import cv2
+import numpy as np
 
 __all__ = [
     "ThresholdGui",
-
+    "CircleGui",
+    "AdaptiveThresholdGui",
+    "Inrange3GUI",
+    "InrangeGui",
+    "CannyGui",
+    "ContoursGui"
 ]
 
 
@@ -167,10 +173,10 @@ class RotatedBoxGui(ParamGui):
                                     self.param_dict['constant'][0],
                                     self.param_dict['invert'][0])
 
-        contours = images.find_contours(thresh)
+        contours = find_contours(thresh)
         box=[]
         for contour in contours:
-            box_guess, rect_guess = images.rotated_bounding_rectangle(contour)
+            box_guess, rect_guess = rotated_bounding_rectangle(contour)
             print(rect_guess[1][0])
             if rect_guess[1][0] < 15:
                 box.append(box_guess)
@@ -218,8 +224,7 @@ class WatershedGui(ParamGui):
         self.param_dict = {'window': [41, 3, 101, 2],
                            'constant': [-26, -30, 30, 1],
                            'invert': [0, 0, 1, 1],
-                           'watershed_thresh': [1, 0, 255, 1]
-                            }
+                           'watershed_thresh': [1, 0, 255, 1]}
         self.grayscale = True
         ParamGui.__init__(self, img, num_imgs=2)
         self.blurred_img = self.im.copy()
@@ -240,6 +245,7 @@ class WatershedGui(ParamGui):
                                   mode=self.param_dict['invert'][0]
                                   )
         self._display_img(thresh, watershed_img)
+
 
 if __name__ == "__main__":
     from basics import load
