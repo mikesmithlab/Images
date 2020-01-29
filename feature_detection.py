@@ -12,7 +12,7 @@ __all__ = [
 ]
 
 
-def find_connected_components(thresh_img,connectivity=4, option=cv2.CV_32S):
+def find_connected_components(thresh_img, connectivity=4, option=cv2.CV_32S):
     """
 
     :param thresh_img: thresholded image
@@ -34,7 +34,7 @@ def find_connected_components(thresh_img,connectivity=4, option=cv2.CV_32S):
     """
     output = cv2.connectedComponentsWithStats(thresh_img, connectivity, option)
 
-    #num_labels = output[0]
+    # num_labels = output[0]
     labels = output[1]
     stats = output[2]
     centroids = output[3]
@@ -72,7 +72,8 @@ def find_circles(img, min_dist, p1, p2, min_rad, max_rad, dp=1):
 
 def histogram_peak(im, disp=False):
     if len(np.shape(im)) == 2:
-        data, bins = np.histogram(np.ndarray.flatten(im), bins=np.arange(20, 255, 1))
+        data, bins = np.histogram(np.ndarray.flatten(im),
+                                  bins=np.arange(20, 255, 1))
         peak = bins[np.argmax(data)]
     if disp:
         plt.figure()

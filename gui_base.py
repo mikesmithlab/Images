@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 from __init__ import *
 import numpy as np
 import locale
+
 # locale.setlocale(locale.LC_NUMERIC, 'pl_PL.UTF8')
 
 __all__ = [
@@ -44,16 +45,20 @@ class ParamGui:
         self.root = tk.Tk()
         self.frame = tk.Frame(self.root)
         self.frame.pack()
-        self.canvas = tk.Canvas(self.frame, width=self.width, height=self.height)
+        self.canvas = tk.Canvas(self.frame, width=self.width,
+                                height=self.height)
 
         image = ImageTk.PhotoImage(Image.fromarray(self.im))
-        self.canvas_image = self.canvas.create_image(0, 0, anchor=tk.NW, image=image)
+        self.canvas_image = self.canvas.create_image(0, 0, anchor=tk.NW,
+                                                     image=image)
         self.image = image
         self.canvas.pack()
 
         # Create live update checkbox
         self.live_update = tk.BooleanVar(False)
-        cb = tk.Checkbutton(self.frame, text='Live update', variable=self.live_update, onvalue=True, offvalue=False, command=self.cb_callback)
+        cb = tk.Checkbutton(self.frame, text='Live update',
+                            variable=self.live_update, onvalue=True,
+                            offvalue=False, command=self.cb_callback)
         cb.pack()
 
         self.add_sliders()
@@ -81,7 +86,10 @@ class ParamGui:
             frame = tk.Frame(self.frame)
             label = tk.Label(frame, text='frame')
             label.pack(side=tk.LEFT)
-            self.frame_slider = tk.Scale(frame, from_=0, to=self.num_frames, orient=tk.HORIZONTAL, length=self.width//2, command=self.slider_callback)
+            self.frame_slider = tk.Scale(frame, from_=0, to=self.num_frames,
+                                         orient=tk.HORIZONTAL,
+                                         length=self.width // 2,
+                                         command=self.slider_callback)
             self.frame_slider.pack(side=tk.LEFT, fill=tk.X)
 
         for key in sorted(self.param_dict.keys()):
@@ -91,7 +99,10 @@ class ParamGui:
             label = tk.Label(frame, text=key)
             label.pack(side=tk.LEFT)
             var = tk.Variable(value=val)
-            slider = OddScale(frame, from_=bottom, to=top, resolution=step, orient=tk.HORIZONTAL, showvalue=False, length=self.width//2, command=self.slider_callback, variable=var)
+            slider = OddScale(frame, from_=bottom, to=top, resolution=step,
+                              orient=tk.HORIZONTAL, showvalue=False,
+                              length=self.width // 2,
+                              command=self.slider_callback, variable=var)
             slider.pack(side=tk.LEFT, fill=tk.X)
             label = tk.Label(frame, text=slider.get())
             label.pack(side=tk.LEFT)
@@ -128,7 +139,7 @@ class OddScale(tk.Scale):
         self.odd_only = False
         if 'resolution' in kw:
             if 'from_' in kw:
-                if (kw['resolution'] == 2) * (kw['from_']%2 != 0):
+                if (kw['resolution'] == 2) * (kw['from_'] % 2 != 0):
                     self.odd_only = True
         kw['resolution'] = 1
         tk.Scale.__init__(self, master, cnf, **kw)

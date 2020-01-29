@@ -2,9 +2,8 @@ import cv2
 import numpy as np
 from __init__ import *
 
-
 __all__ = [
-   'threshold',
+    'threshold',
     'adaptive_threshold',
     'inrange',
     'watershed',
@@ -58,7 +57,8 @@ def inrange(im, bottom_tuple, top_tuple):
     return cv2.inRange(im, bottom_tuple, top_tuple)
 
 
-def watershed(img, watershed_threshold=0.5, block_size=5, constant=0, mode=cv2.THRESH_BINARY):
+def watershed(img, watershed_threshold=0.5, block_size=5, constant=0,
+              mode=cv2.THRESH_BINARY):
     d = depth(img)
     if d == 3:
         grayscale_img = bgr_to_gray(img)
@@ -67,7 +67,8 @@ def watershed(img, watershed_threshold=0.5, block_size=5, constant=0, mode=cv2.T
         img = gray_to_bgr(
             img)
 
-    binary_img = adaptive_threshold(grayscale_img, block_size=block_size, constant=constant, mode=mode)
+    binary_img = adaptive_threshold(grayscale_img, block_size=block_size,
+                                    constant=constant, mode=mode)
 
     # noise removal
     kernel = np.ones((3, 3), np.uint8)
@@ -77,7 +78,7 @@ def watershed(img, watershed_threshold=0.5, block_size=5, constant=0, mode=cv2.T
     sure_bg = cv2.dilate(opening, kernel, iterations=3)
     dist_transform_img = distance_transform(binary_img)
 
-    #sure foreground area
+    # sure foreground area
     sure_fg = threshold(dist_transform_img, value=watershed_threshold)
     sure_fg = np.uint8(sure_fg)
 

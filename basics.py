@@ -40,6 +40,7 @@ def mean(ims):
     im = np.mean(im, axis=len(np.shape(ims[0])))
     return np.uint8(im)
 
+
 def display(image, title='', resolution=(960, 540)):
     """Uses cv2 to display an image then wait for a button press"""
     cv2.namedWindow(title, cv2.WINDOW_KEEPRATIO)
@@ -48,14 +49,17 @@ def display(image, title='', resolution=(960, 540)):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
+
 def plot(im):
     plt.figure()
     plt.imshow(im)
     plt.show()
 
+
 def to_uint8(im):
-    im = (im - np.min(im))/(np.max(im)-np.min(im)) * 255
+    im = (im - np.min(im)) / (np.max(im) - np.min(im)) * 255
     return np.uint8(im)
+
 
 def read_img(filepath, flag=1):
     """

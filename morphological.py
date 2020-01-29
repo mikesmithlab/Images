@@ -1,7 +1,6 @@
 import cv2
 import numpy as np
 
-
 __all__ = ['dilate', 'erode', 'closing', 'opening']
 
 
@@ -78,7 +77,7 @@ def erode(img, kernel=(3, 3), kernel_type=None, iterations=1):
     if kernel_type is not None:
         kernel = cv2.getStructuringElement(kernel_type, kernel)
     else:
-        kernel=np.ones(kernel)
+        kernel = np.ones(kernel)
     out = cv2.erode(img, kernel, iterations)
     return out
 

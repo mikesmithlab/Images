@@ -24,23 +24,23 @@ class ThresholdGui(ParamGui):
     def update(self):
         if self.param_dict['invert'][0] == 0:
             self._display_img(threshold(self.im0,
-                                value=self.param_dict['threshold'][0]))
+                                        value=self.param_dict['threshold'][0]))
         else:
             self._display_img(threshold(self.im0,
-                                value=self.param_dict['threshold'][0],
-                                mode=cv2.THRESH_BINARY_INV))
+                                        value=self.param_dict['threshold'][0],
+                                        mode=cv2.THRESH_BINARY_INV))
 
 
 class CircleGui(ParamGui):
     def __init__(self, img):
         self.grayscale = True
         self.param_dict = {
-                    'distance': [25, 3, 51, 2],
-                    'thresh1': [200, 0, 255, 1],
-                    'thresh2': [5, 0, 20, 1],
-                    'min_rad': [17, 3, 50, 1],
-                    'max_rad': [19, 3, 50, 1]
-                    }
+            'distance': [25, 3, 51, 2],
+            'thresh1': [200, 0, 255, 1],
+            'thresh2': [5, 0, 20, 1],
+            'min_rad': [17, 3, 50, 1],
+            'max_rad': [19, 3, 50, 1]
+        }
         ParamGui.__init__(self, img)
 
     def update(self):
@@ -66,13 +66,15 @@ class AdaptiveThresholdGui(ParamGui):
         if self.param_dict['invert'][0] == 0:
             self._display_img(adaptive_threshold(self.im0,
                                                  self.param_dict['window'][0],
-                                                 self.param_dict['constant'][0],
+                                                 self.param_dict['constant'][
+                                                     0],
                                                  mode=self.mode)
                               )
         else:
             self._display_img(adaptive_threshold(self.im0,
                                                  self.param_dict['window'][0],
-                                                 self.param_dict['constant'][0],
+                                                 self.param_dict['constant'][
+                                                     0],
                                                  mode=cv2.THRESH_BINARY_INV)
                               )
 
@@ -110,6 +112,7 @@ class Inrange3GUI(ParamGui):
             (self.param_dict['0 top'][0], self.param_dict['1 top'][0],
              self.param_dict['2 top'][0]))
 
+
 class CannyGui(ParamGui):
 
     def __init__(self, img):
@@ -129,6 +132,7 @@ class ContoursGui(ParamGui):
     This applies adaptive threshold (this is what you are adjusting and is the
     value on the slider. It then applies findcontours and draws them to display result
     '''
+
     def __init__(self, img, thickness=2):
         self.param_dict = {'window': [53, 3, 101, 2],
                            'constant': [-26, -30, 30, 1],
@@ -147,7 +151,8 @@ class ContoursGui(ParamGui):
                                     self.param_dict['invert'][0])
 
         contours = find_contours(thresh)
-        im2 = draw_contours(gray_to_bgr(self.im0.copy()), contours, thickness=self.thickness)
+        im2 = draw_contours(gray_to_bgr(self.im0.copy()), contours,
+                            thickness=self.thickness)
         self._display_img(thresh, im2)
 
 
@@ -156,6 +161,7 @@ class RotatedBoxGui(ParamGui):
     This applies adaptive threshold (this is what you are adjusting and is the
     value on the slider. It then applies findcontours and draws them to display result
     '''
+
     def __init__(self, img, thickness=2):
         self.param_dict = {'window': [53, 3, 101, 2],
                            'constant': [-26, -30, 30, 1],
@@ -174,7 +180,7 @@ class RotatedBoxGui(ParamGui):
                                     self.param_dict['invert'][0])
 
         contours = find_contours(thresh)
-        box=[]
+        box = []
         for contour in contours:
             box_guess, rect_guess = rotated_bounding_rectangle(contour)
             print(rect_guess[1][0])
@@ -183,10 +189,9 @@ class RotatedBoxGui(ParamGui):
             else:
                 img = separate_rects(contour, box_guess)
 
-
-
         box = np.array(box)
-        self._display_img(thresh, draw_contours(self.im0.copy(), box, thickness=self.thickness))
+        self._display_img(thresh, draw_contours(self.im0.copy(), box,
+                                                thickness=self.thickness))
 
 
 class DistanceTransformGui(ParamGui):
@@ -210,17 +215,20 @@ class DistanceTransformGui(ParamGui):
 
         dist_transform_img = distance_transform(self.blurred_img,
                                                 preprocess=True,
-                                                block_size=self.param_dict['window'][0],
-                                                constant=self.param_dict['constant'][0],
-                                                mode=self.param_dict['invert'][0]
+                                                block_size=
+                                                self.param_dict['window'][0],
+                                                constant=
+                                                self.param_dict['constant'][0],
+                                                mode=self.param_dict['invert'][
+                                                    0]
                                                 )
-        dist_transform_img = 255*dist_transform_img/np.max(dist_transform_img)
+        dist_transform_img = 255 * dist_transform_img / np.max(
+            dist_transform_img)
         self._display_img(thresh, dist_transform_img)
 
 
 class WatershedGui(ParamGui):
     def __init__(self, img):
-
         self.param_dict = {'window': [41, 3, 101, 2],
                            'constant': [-26, -30, 30, 1],
                            'invert': [0, 0, 1, 1],
@@ -239,7 +247,8 @@ class WatershedGui(ParamGui):
                                     )
 
         watershed_img = watershed(self.im0.copy(),
-                                  watershed_threshold=self.param_dict['watershed_thresh'][0],
+                                  watershed_threshold=
+                                  self.param_dict['watershed_thresh'][0],
                                   block_size=self.param_dict['window'][0],
                                   constant=self.param_dict['constant'][0],
                                   mode=self.param_dict['invert'][0]
@@ -249,5 +258,6 @@ class WatershedGui(ParamGui):
 
 if __name__ == "__main__":
     from basics import load
+
     im = load("/home/ppxjd3/Pictures/hecx.png")
     pg = ContoursGui(im)

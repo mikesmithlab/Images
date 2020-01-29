@@ -4,7 +4,6 @@ from scipy import optimize as op
 from math import pi, cos, sin
 from __init__ import *
 
-
 __all__ = [
     "find_contours",
     "center_of_mass",
@@ -13,7 +12,6 @@ __all__ = [
     "find_contour_corners",
     "fit_hex",
     "cut_out_object"
-
 
 ]
 
@@ -97,14 +95,14 @@ def find_contour_corners(cnt, n, aligned=True):
     # calculate the angles of all contour points
     vectors = cnt - (xc, yc)
     if aligned:
-        R = np.array(((cos(pi/6), -sin(pi/6)), (sin(pi/6), cos(pi/6))))
+        R = np.array(((cos(pi / 6), -sin(pi / 6)), (sin(pi / 6), cos(pi / 6))))
         vectors = np.dot(vectors, R)
-    r = vectors[:, 0]**2 + vectors[:, 1]**2
+    r = vectors[:, 0] ** 2 + vectors[:, 1] ** 2
     theta = np.arctan2(vectors[:, 1], vectors[:, 0]) * 180 / pi
-    angles = np.linspace(-180, 180, n+1)
+    angles = np.linspace(-180, 180, n + 1)
     corners = []
     for i in range(n):
-        in_region = np.nonzero((theta >= angles[i])*(theta < angles[i+1]))
+        in_region = np.nonzero((theta >= angles[i]) * (theta < angles[i + 1]))
         max_r = np.argmax(r[in_region])
         corners.append(in_region[0][max_r])
     return corners, (xc, yc)
@@ -137,9 +135,11 @@ def hex_dist(params, contour):
     distances = np.zeros((len(contour), 6))
     x0, y0 = np.split(contour, 2, axis=1)
     for p in range(6):
-        x1, y1 = points[p-1, :]
+        x1, y1 = points[p - 1, :]
         x2, y2 = points[p, :]
-        distance = np.abs((y2-y1)*x0 - (x2-x1)*y0 + x2*y1 - y2*x1) / np.sqrt((y2-y1)**2 + (x2-x1)**2)
+        distance = np.abs(
+            (y2 - y1) * x0 - (x2 - x1) * y0 + x2 * y1 - y2 * x1) / np.sqrt(
+            (y2 - y1) ** 2 + (x2 - x1) ** 2)
         distances[:, p] = np.squeeze(distance)
     distances = np.min(distances, axis=1)
     return np.sum(distances)
@@ -150,22 +150,22 @@ def cut_out_object(im, contour, buffer=3, setsurroundblack=False):
     Cuts out a horizontal box around a contour.
     """
     colordepth = depth(im)
-    x,y,w,h = cv2.boundingRect(contour)
+    x, y, w, h = cv2.boundingRect(contour)
 
-    #Add buffer zone round img
+    # Add buffer zone round img
     x -= buffer
     y -= buffer
-    w += 2*buffer
-    h += 2*buffer
+    w += 2 * buffer
+    h += 2 * buffer
 
-    #Check not outside original images
+    # Check not outside original images
     maxy, maxx = np.shape(im)[:2]
     x = 0 if x < 0 else x
     y = 0 if y < 0 else y
-    h = maxy - y if y+h > maxy else h
-    w = maxx - x if x+w > maxx else w
+    h = maxy - y if y + h > maxy else h
+    w = maxx - x if x + w > maxx else w
 
-    cut_img = im[y:y+h, x:x+w]
+    cut_img = im[y:y + h, x:x + w]
     if setsurroundblack:
         cut_img[0, :] = 0
         cut_img[:, 0] = 0

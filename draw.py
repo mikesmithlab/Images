@@ -17,13 +17,13 @@ __all__ = [
 
 
 def draw_circle(im, cx, cy, rad, color=YELLOW, thickness=2):
-    assert len(np.shape(im))==3, "Image needs to be 3 channel"
+    assert len(np.shape(im)) == 3, "Image needs to be 3 channel"
     cv2.circle(im, (int(cx), int(cy)), int(rad), color, thickness)
     return im
 
 
 def draw_circles(im, circles, color=YELLOW, thickness=2):
-    assert len(np.shape(im))==3, "Image needs to be 3 channel"
+    assert len(np.shape(im)) == 3, "Image needs to be 3 channel"
     assert len(circles) > 0, "Circles must not be empty"
     assert np.shape(circles)[1] == 3, "Circles must contain x, y, and r"
     for x, y, rad in circles:
@@ -32,7 +32,7 @@ def draw_circles(im, circles, color=YELLOW, thickness=2):
 
 
 def draw_circles_with_scale(im, circles, values, cmap=cm.viridis, thickness=2):
-    assert len(np.shape(im))==3, "Image needs to be 3 channel"
+    assert len(np.shape(im)) == 3, "Image needs to be 3 channel"
     for (x, y, r), v in zip(circles, values):
         col = np.multiply(cmap(v), 255)
         cv2.circle(im, (int(x), int(y)), int(r), col, thickness)
@@ -103,8 +103,8 @@ def draw_voronoi_cells(im, points):
         if -1 not in ridge:
             new_ridge_vertices.append(ridge)
     im = draw_polygons(im,
-                        voro.vertices[new_ridge_vertices],
-                        color=PINK)
+                       voro.vertices[new_ridge_vertices],
+                       color=PINK)
     return im
 
 
